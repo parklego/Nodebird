@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start"
   },
-  "author": "ZeroCho",
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "antd": "^3.23.1",
