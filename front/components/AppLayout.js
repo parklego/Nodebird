@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import { Menu, Input, Row, Col, Card, Avatar } from "antd";
+import { Menu, Input, Row, Col } from "antd";
 import LoginForm from "../components/LoginForm";
+import UserProfile from "../components/UserProfile";
 
 const dummy = {
   nickname: "에이프",
@@ -32,39 +34,14 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={10}>
         <Col xs={24} md={6}>
-          {dummy.isLoggedIn ? (
-            <Card
-              actions={[
-                <div key="twit">
-                  짹쨱
-                  <br />
-                  {dummy.post.length}
-                </div>,
-                <div key="following">
-                  팔로잉
-                  <br />
-                  {dummy.Followings.length}
-                </div>,
-                <div key="follower">
-                  팔로워
-                  <br />
-                  {dummy.Follwers.length}
-                </div>,
-              ]}
-            >
-              <Card.Meta
-                avatar={<Avatar>{dummy.nickname[0]}</Avatar>}
-                title={dummy.nickname}
-              />
-            </Card>
-          ) : (
-            <LoginForm />
-          )}
+          {dummy.isLoggedIn ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
         </Col>
-        <Col xs={24} md={6}></Col>
+        <Col xs={24} md={6}>
+          제로초님의 `React로 NodeBird SNS` 만들기 클론코딩
+        </Col>
       </Row>
     </div>
   );

@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react";
+/* eslint-disable no-console */
+import React, { useCallback } from "react";
 import { Input, Button, Form } from "antd";
 import Link from "next/link";
 import { useInput } from "../pages/signup";
@@ -32,7 +33,7 @@ const LoginForm = () => {
           required
         />
       </div>
-      <div>
+      <div style={{ marginTop: "10px" }}>
         <Button type="primary" htmlType="submit" loading={false}>
           로그인
         </Button>
