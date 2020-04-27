@@ -3,18 +3,12 @@ import React from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import { Menu, Input, Row, Col } from "antd";
+import { useSelector } from "react-redux";
 import LoginForm from "../components/LoginForm";
 import UserProfile from "../components/UserProfile";
 
-const dummy = {
-  nickname: "에이프",
-  post: [],
-  Followings: [],
-  Follwers: [],
-  isLoggedIn: false,
-};
-
 const AppLayout = ({ children }) => {
+  const { isLoggedIn } = useSelector((state) => state.user);
   return (
     <div>
       <Menu mode="horizontal">
@@ -34,13 +28,13 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={10}>
         <Col xs={24} md={6}>
-          {dummy.isLoggedIn ? <UserProfile /> : <LoginForm />}
+          {isLoggedIn ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
         </Col>
         <Col xs={24} md={6}>
-          제로초님의 `React로 NodeBird SNS` 만들기 클론코딩
+          제로초님의 `React로 NodeBird SNS 만들기` 클론코딩
         </Col>
       </Row>
     </div>
