@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import { useDispatch } from "react-redux";
-import { signUpAction } from "../reducers/user";
+import { useDispatch, useSelector } from "react-redux";
+import { SIGN_UP_REQUEST } from "../reducers/user";
 
 // import PropTypes from "prop-types";
 
@@ -31,6 +31,7 @@ const Signup = () => {
   const [nick, onChangeNick] = useInput("");
   const [password, onChangePassword] = useInput("");
   const dispatch = useDispatch();
+  const { isSigningUp } = useSelector((state) => state.user);
 
   const onSubmit = useCallback(
     (e) => {
@@ -41,13 +42,14 @@ const Signup = () => {
       if (!term) {
         return setTermError(true);
       }
-      dispatch(
-        signUpAction({
+      dispatch({
+        type: SIGN_UP_REQUEST,
+        data: {
           id,
           password,
           nick,
-        })
-      );
+        },
+      });
     },
     [password, passwordCheck, term]
   );
@@ -118,7 +120,7 @@ const Signup = () => {
           )}
         </div>
         <div style={{ marginTop: 10 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isSigningUp}>
             가입하기
           </Button>
         </div>
