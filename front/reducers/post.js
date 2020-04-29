@@ -20,7 +20,7 @@ const dummyPost = {
   id: 2,
   User: {
     id: 1,
-    nickname: "제로초",
+    nickname: "에이프",
   },
   content: "나는 더미입니다",
 };
