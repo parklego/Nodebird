@@ -30,8 +30,8 @@ const NodeBird = ({ Component, store }) => {
 };
 
 NodeBird.propTypes = {
-  Component: PropTypes.elementType,
-  store: PropTypes.object,
+  Component: PropTypes.elementType.isRequired,
+  store: PropTypes.object.isRequired,
 };
 export default withRedux((initialState, options) => {
   const sagaMiddleware = createSagaMiddleware();
