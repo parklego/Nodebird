@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import Router from "next/router";
 import { SIGN_UP_REQUEST } from "../reducers/user";
 
 // import PropTypes from "prop-types";
@@ -31,8 +32,14 @@ const Signup = () => {
   const [nick, onChangeNick] = useInput("");
   const [password, onChangePassword] = useInput("");
   const dispatch = useDispatch();
-  const { isSigningUp } = useSelector((state) => state.user);
+  const { isSigningUp, me } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    if (me) {
+      alert("로그인 성공! 메인페이지로 이동합니다.");
+      Router.push("/");
+    }
+  }, [me && me.id]);
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();

@@ -3,6 +3,7 @@ const dummyUser = {
   Post: [],
   Followings: [],
   Followers: [],
+  id: 1,
 };
 export const initialState = {
   isLoggedIn: false, // 로그인 여부
