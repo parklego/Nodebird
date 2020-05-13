@@ -29,8 +29,16 @@ module.exports = (sequelize, DataTypes) => {
     // through는 가운데 관계를 위해 생성되는 중간 테이블명
     // as는 구분을 위해 사용
     db.User.belongsToMany(db.Post, { through: "Like", as: "Liked" });
-    db.User.belongsToMany(db.User, { through: "Follow", as: "Followers" });
-    db.User.belongsToMany(db.User, { through: "Follow", as: "Followings" });
+    db.User.belongsToMany(db.User, {
+      through: "Follow",
+      as: "Followers",
+      foreignKey: "followingId",
+    });
+    db.User.belongsToMany(db.User, {
+      through: "Follow",
+      as: "Followings",
+      foreignKey: "followerId",
+    });
   };
   return User;
 };
