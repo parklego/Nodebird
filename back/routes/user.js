@@ -5,7 +5,14 @@ const passport = require("passport");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {});
+router.get("/", (req, res) => {
+  if (!req.user) {
+    return res.status(401).send("로그인이 필요합니다.");
+  }
+  const user = Object.assign({}, req.user.toJSON());
+  delete user.password;
+  return res.json(user);
+});
 router.post("/", async (req, res, next) => {
   try {
     const exUser = await db.User.findOne({
@@ -22,7 +29,7 @@ router.post("/", async (req, res, next) => {
       userId: req.body.userId,
       password: hashedPassword,
     });
-    console.log(newUser);
+    // console.log(newUser);
     return res.status(200).json(newUser);
   } catch (e) {
     console.error(e);
@@ -30,7 +37,13 @@ router.post("/", async (req, res, next) => {
   }
 });
 router.get("/:id", (req, res) => {});
-router.post("/logout", (req, res) => {});
+
+router.post("/logout", (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send("로그아웃 성공");
+});
+
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
@@ -76,11 +89,13 @@ router.post("/login", (req, res, next) => {
     });
   })(req, res, next);
 });
+
 router.post("/logout", (req, res) => {
   req.logout();
   req.session.destroy();
   res.send("logout 성공");
 });
+
 router.get("/:id/follow", (req, res) => {});
 router.post("/:id/follow", (req, res) => {});
 router.delete("/:id/follow", (req, res) => {});
