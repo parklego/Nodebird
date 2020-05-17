@@ -9,7 +9,7 @@ import reducer from "../reducers";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 
-const NodeBird = ({ Component, store }) => {
+const NodeBird = ({ Component, store, pageProps }) => {
   return (
     <>
       <Provider store={store}>
@@ -21,7 +21,7 @@ const NodeBird = ({ Component, store }) => {
           />
         </Head>
         <AppLayout>
-          <Component />
+          <Component {...pageProps} />
         </AppLayout>
       </Provider>
     </>
@@ -31,6 +31,16 @@ const NodeBird = ({ Component, store }) => {
 NodeBird.propTypes = {
   Component: PropTypes.elementType.isRequired,
   store: PropTypes.object.isRequired,
+};
+
+NodeBird.getInitialProps = async (context) => {
+  console.log(context);
+  const { ctx, Component } = context;
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await context.Component.getInitialProps(ctx);
+  }
+  return { pageProps };
 };
 export default withRedux((initialState, options) => {
   const sagaMiddleware = createSagaMiddleware();
