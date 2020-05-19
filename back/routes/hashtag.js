@@ -9,7 +9,7 @@ router.get("/:tag", async (req, res, next) => {
       include: [
         {
           model: db.Hashtag,
-          where: { name: decodeURIComponent(req.params.name) },
+          where: { name: decodeURIComponent(req.params.tag) },
           // 서버에서 한글이나 특수문자가 주소에 들어가야 할 때 !
         },
         {
