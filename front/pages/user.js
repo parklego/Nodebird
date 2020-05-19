@@ -49,14 +49,14 @@ const User = ({ id }) => {
         </Card>
       ) : null}
       {mainPosts.map((c) => (
-        <PostCard key={+c.createdAt} post={c} />
+        <PostCard key={c.createdAt.valueOf()} post={c} />
       ))}
     </div>
   );
 };
 
 User.getInitialProps = async (context) => {
-  console.log("user get", context.query.id);
+  //   console.log("user get", context.query.id);
   return { id: parseInt(context.query.id, 10) };
 };
 
