@@ -36,10 +36,10 @@ router.post("/", async (req, res, next) => {
     return next(e);
   }
 });
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const user = await db.User.findOne({
-      where: { id: parseInt(req.params.id, 10) },
+      where: { Id: parseInt(req.params.id, 10) },
       include: [
         {
           model: db.Post,
@@ -61,9 +61,11 @@ router.get("/:id", async (req, res) => {
     });
     // 누가 팔로우 팔로잉인지 노출되는것이 민감한 정보일 수 있음
     const jsonUser = user.toJSON();
-    jsonUser.Posts = jsonUser.posts ? jsonUser.Post.length : 0;
+    console.log(jsonUser);
+    jsonUser.Posts = jsonUser.Posts ? jsonUser.Posts.length : 0;
     jsonUser.Followings = jsonUser.Followings ? jsonUser.Followings.length : 0;
     jsonUser.Followers = jsonUser.Followers ? jsonUser.Followers.length : 0;
+    console.log(jsonUser);
     res.json(jsonUser);
   } catch (e) {
     console.error(e);
