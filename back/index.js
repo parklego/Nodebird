@@ -24,6 +24,7 @@ passportConfig();
 app.use(express.json()); // express에서 지원해줘서 bodyparser필요없음!
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use("/", express.static("uploads")); // 다른서버에서 가져갈수있게
 app.use(
   cors({
     origin: true,

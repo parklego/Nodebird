@@ -71,6 +71,27 @@ router.get("/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get("/:id/posts", async (req, res, next) => {
+  try {
+    const posts = await db.Post.findAll({
+      where: {
+        UserId: parseInt(req.params.id, 10),
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "nickname"],
+        },
+        { model: db.Image },
+      ],
+    });
+    res.json(posts);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 router.post("/logout", (req, res) => {
   req.logout();
   req.session.destroy();
@@ -133,24 +154,5 @@ router.get("/:id/follow", (req, res) => {});
 router.post("/:id/follow", (req, res) => {});
 router.delete("/:id/follow", (req, res) => {});
 router.delete("/:id/follower", (req, res) => {});
-router.get("/:id/posts", async (req, res, next) => {
-  try {
-    const posts = await db.Post.findAll({
-      where: {
-        UserId: parseInt(req.params.id, 10),
-      },
-      include: [
-        {
-          model: db.User,
-          attributes: ["id", "nickname"],
-        },
-      ],
-    });
-    res.json(posts);
-  } catch (e) {
-    console.error(e);
-    next(e);
-  }
-});
 
 module.exports = router;
