@@ -54,8 +54,31 @@ export const RETWEET_FAILURE = "RETWEET_FAILURE";
 export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST";
 export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
 export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case REMOVE_IMAGE: {
+      return {
+        ...state,
+        imagePaths: state.imagePaths.filter((v, i) => i !== action.index),
+      };
+    }
+    case UPLOAD_IMAGES_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case UPLOAD_IMAGES_SUCCESS: {
+      return {
+        ...state,
+        imagePaths: [...state.imagePaths, ...action.data],
+      };
+    }
+    case UPLOAD_IMAGES_FAILURE: {
+      return {
+        ...state,
+      };
+    }
     case LOAD_HASHTAG_POSTS_REQUEST:
     case LOAD_USER_POSTS_REQUEST:
     case LOAD_MAIN_POSTS_REQUEST: {
@@ -94,6 +117,7 @@ const reducer = (state = initialState, action) => {
         isAddingPost: false,
         mainPosts: [action.data, ...state.mainPosts],
         postAdded: true,
+        imagePaths: [],
       };
     }
     case ADD_POST_FAILURE: {

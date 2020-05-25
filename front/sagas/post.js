@@ -19,6 +19,9 @@ import {
   LOAD_COMMENTS_REQUEST,
   LOAD_COMMENTS_SUCCESS,
   LOAD_COMMENTS_FAILURE,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
+  UPLOAD_IMAGES_REQUEST,
 } from "../reducers/post";
 
 function loadMainPostsAPI() {
@@ -165,6 +168,30 @@ function* loadComments(action) {
 function* watchLoadComments() {
   yield takeLatest(LOAD_COMMENTS_REQUEST, loadComments);
 }
+//
+function uploadImagesAPI(formData) {
+  return axios.post(`/post/images`, formData, {
+    withCredentials: true,
+  });
+}
+
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data);
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      error: e,
+    });
+  }
+}
+function* watchUploadImages() {
+  yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
+}
 export default function* postSaga() {
   yield all([
     fork(watchLoadMainPosts),
@@ -173,5 +200,6 @@ export default function* postSaga() {
     fork(watchLoadComments),
     fork(watchLoadHashtagPosts),
     fork(watchLoadUserPosts),
+    fork(watchUploadImages),
   ]);
 }
