@@ -28,6 +28,9 @@ import {
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
   UNLIKE_POST_FAILURE,
+  RETWEET_REQUEST,
+  RETWEET_SUCCESS,
+  RETWEET_FAILURE,
 } from "../reducers/post";
 
 function loadMainPostsAPI() {
@@ -261,6 +264,37 @@ function* watchUnlikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
 
+function retweetAPI(postId) {
+  // post 일 때에는 값이 없더라도 빈 객체를 넘겨줘야함!
+  return axios.post(
+    `/post/${postId}/retweet`,
+    {},
+
+    {
+      withCredentials: true,
+    }
+  );
+}
+
+function* retweet(action) {
+  try {
+    const result = yield call(retweetAPI, action.data);
+    yield put({
+      type: RETWEET_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: RETWEET_FAILURE,
+      error: e,
+    });
+    alert(e.response && e.response.data);
+  }
+}
+function* watchRetwwet() {
+  yield takeLatest(RETWEET_REQUEST, retweet);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchLoadMainPosts),
@@ -272,5 +306,6 @@ export default function* postSaga() {
     fork(watchUploadImages),
     fork(watchLikePost),
     fork(watchUnlikePost),
+    fork(watchRetwwet),
   ]);
 }
