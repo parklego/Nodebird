@@ -28,6 +28,15 @@ import {
   UNFOLLOW_USER_REQUEST,
   UNFOLLOW_USER_SUCCESS,
   UNFOLLOW_USER_FAILURE,
+  LOAD_FOLLOWERS_REQUEST,
+  LOAD_FOLLOWERS_SUCCESS,
+  LOAD_FOLLOWERS_FAILURE,
+  LOAD_FOLLOWINGS_REQUEST,
+  LOAD_FOLLOWINGS_SUCCESS,
+  LOAD_FOLLOWINGS_FAILURE,
+  REMOVE_FOLLOWER_SUCCESS,
+  REMOVE_FOLLOWER_REQUEST,
+  REMOVE_FOLLOWER_FAILURE,
 } from "../reducers/user";
 
 function logInAPI(loginData) {
@@ -201,6 +210,84 @@ function* loadUser(action) {
 function* watchLoadUser() {
   yield takeEvery(LOAD_USER_REQUEST, loadUser);
 }
+//
+function loadFollowersAPI(userId) {
+  return axios.get(`/user/${userId}/followers`, {
+    withCredentials: true,
+  });
+}
+
+function* loadFollowers(action) {
+  try {
+    const result = yield call(loadFollowersAPI, action.data);
+    yield put({
+      type: LOAD_FOLLOWERS_SUCCESS,
+      data: result.data,
+      me: !action.data, // 유저정보가 없으면 내정보를 가져온다
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: LOAD_FOLLOWERS_FAILURE,
+      error: e,
+    });
+  }
+}
+function* watchLoadFollowers() {
+  yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers);
+}
+//
+function loadFollowingsAPI(userId) {
+  return axios.get(`/user/${userId}/followers`, {
+    withCredentials: true,
+  });
+}
+
+function* loadFollowings(action) {
+  try {
+    const result = yield call(loadFollowingsAPI, action.data);
+    yield put({
+      type: LOAD_FOLLOWINGS_SUCCESS,
+      data: result.data,
+      me: !action.data, // 유저정보가 없으면 내정보를 가져온다
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: LOAD_FOLLOWINGS_FAILURE,
+      error: e,
+    });
+  }
+}
+function* watchLoadFollowings() {
+  yield takeEvery(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
+}
+//
+function removeFollowAPI(userId) {
+  return axios.delete(`/user/${userId}/follower`, {
+    withCredentials: true,
+  });
+}
+
+function* removeFollower(action) {
+  try {
+    const result = yield call(removeFollowAPI, action.data);
+    yield put({
+      type: REMOVE_FOLLOWER_SUCCESS,
+      data: result.data,
+      me: !action.data, // 유저정보가 없으면 내정보를 가져온다
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: REMOVE_FOLLOWER_FAILURE,
+      error: e,
+    });
+  }
+}
+function* watchRemoveFollower() {
+  yield takeEvery(REMOVE_FOLLOWER_REQUEST, removeFollower);
+}
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
@@ -209,5 +296,8 @@ export default function* userSaga() {
     fork(watchLoadUser),
     fork(watchFollow),
     fork(watchUnfollow),
+    fork(watchLoadFollowers),
+    fork(watchLoadFollowings),
+    fork(watchRemoveFollower),
   ]);
 }
