@@ -1,6 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Avatar, Button, Card, Comment, Form, Icon, Input, List } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Comment,
+  Form,
+  Icon,
+  Input,
+  List,
+  Popover,
+} from "antd";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -109,19 +119,37 @@ const PostCard = ({ post }) => {
   return (
     <div>
       <Card
-        key={post.createdAt.valueOf()}
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        key={+post.createdAt}
+        cover={
+          post.Images && post.Images[0] && <PostImages images={post.Images} />
+        }
         actions={[
           <Icon type="retweet" key="retweet" onClick={onRetweet} />,
           <Icon
             type="heart"
             key="heart"
-            onClick={onToggleLike}
             theme={liked ? "twoTone" : "outlined"}
             twoToneColor="#eb2f96"
+            onClick={onToggleLike}
           />,
           <Icon type="message" key="message" onClick={onToggleComment} />,
-          <Icon type="ellipsis" key="ellipsis" />,
+          <Popover
+            key="ellipsis"
+            content={
+              <Button.Group>
+                {me && post.UserId === me.id ? (
+                  <>
+                    <Button>수정</Button>
+                    <Button type="danger">삭제</Button>
+                  </>
+                ) : (
+                  <Button>신고</Button>
+                )}
+              </Button.Group>
+            }
+          >
+            <Icon type="ellipsis" />
+          </Popover>,
         ]}
         title={
           post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null
@@ -158,9 +186,8 @@ const PostCard = ({ post }) => {
                 </Link>
               }
               title={post.Retweet.User.nickname}
-              description={<PostCardContent postData={post.Retweet.content} />} // a tag x => Link
+              description={<PostCardContent postData={post.Retweet.content} />} // a tag x -> Link
             />
-            )}
           </Card>
         ) : (
           <Card.Meta
@@ -175,7 +202,7 @@ const PostCard = ({ post }) => {
               </Link>
             }
             title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />} // a tag x => Link
+            description={<PostCardContent postData={post.content} />} // a tag x -> Link
           />
         )}
       </Card>
