@@ -37,6 +37,9 @@ import {
   REMOVE_FOLLOWER_SUCCESS,
   REMOVE_FOLLOWER_REQUEST,
   REMOVE_FOLLOWER_FAILURE,
+  EDIT_NICKNAME_REQUEST,
+  EDIT_NICKNAME_SUCCESS,
+  EDIT_NICKNAME_FAILURE,
 } from "../reducers/user";
 
 function logInAPI(loginData) {
@@ -223,7 +226,6 @@ function* loadFollowers(action) {
     yield put({
       type: LOAD_FOLLOWERS_SUCCESS,
       data: result.data,
-      me: !action.data, // 유저정보가 없으면 내정보를 가져온다
     });
   } catch (e) {
     console.error(e);
@@ -249,7 +251,6 @@ function* loadFollowings(action) {
     yield put({
       type: LOAD_FOLLOWINGS_SUCCESS,
       data: result.data,
-      me: !action.data, // 유저정보가 없으면 내정보를 가져온다
     });
   } catch (e) {
     console.error(e);
@@ -288,6 +289,38 @@ function* removeFollower(action) {
 function* watchRemoveFollower() {
   yield takeEvery(REMOVE_FOLLOWER_REQUEST, removeFollower);
 }
+
+//
+function editNicknameAPI(nickname) {
+  return axios.patch(
+    `/user/nickname`,
+    { nickname },
+    {
+      withCredentials: true,
+    }
+  );
+}
+
+function* editNickname(action) {
+  try {
+    const result = yield call(editNicknameAPI, action.data);
+    yield put({
+      type: EDIT_NICKNAME_SUCCESS,
+      data: result.data,
+      me: !action.data, // 유저정보가 없으면 내정보를 가져온다
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: EDIT_NICKNAME_FAILURE,
+      error: e,
+    });
+  }
+}
+function* watchEditNickname() {
+  yield takeEvery(EDIT_NICKNAME_REQUEST, editNickname);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
@@ -299,5 +332,6 @@ export default function* userSaga() {
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
     fork(watchRemoveFollower),
+    fork(watchEditNickname),
   ]);
 }
