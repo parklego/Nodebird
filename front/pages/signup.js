@@ -36,7 +36,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (me) {
-      alert("로그인 성공! 메인페이지로 이동합니다.");
+      alert("로그인 상태입니다! 메인페이지로 이동합니다.");
       Router.push("/");
     }
   }, [me && me.id]);
@@ -74,6 +74,9 @@ const Signup = () => {
     setTerm(e.target.checked);
   }, []);
 
+  if (me) {
+    return null;
+  }
   return (
     <>
       <Form onSubmit={onSubmit} style={{ padding: 10 }}>
