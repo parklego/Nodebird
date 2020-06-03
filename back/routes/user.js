@@ -75,7 +75,8 @@ router.get("/:id/posts", async (req, res, next) => {
   try {
     const posts = await db.Post.findAll({
       where: {
-        UserId: parseInt(req.params.id, 10),
+        UserId: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0,
+        RetweetId: null,
       },
       include: [
         {
@@ -83,6 +84,7 @@ router.get("/:id/posts", async (req, res, next) => {
           attributes: ["id", "nickname"],
         },
         { model: db.Image },
+        { model: db.User, through: "Like", as: "Likers", attributes: ["id"] },
       ],
     });
     res.json(posts);
@@ -150,9 +152,100 @@ router.post("/logout", (req, res) => {
   res.send("logout 성공");
 });
 
-router.get("/:id/follow", (req, res) => {});
-router.post("/:id/follow", (req, res) => {});
-router.delete("/:id/follow", (req, res) => {});
-router.delete("/:id/follower", (req, res) => {});
+router.get("/:id/followings", isLoggedIn, async (req, res, next) => {
+  // /api/user/:id/followings
+  try {
+    const user = await db.User.findOne({
+      where: {
+        id: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0,
+      },
+    });
+    const followers = await user.getFollowings({
+      attributes: ["id", "nickname"],
+      offset: parseInt(req.query.offset, 10),
+      limit: parseInt(req.query.limit, 10),
+    });
+    res.json(followers);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
 
+router.get("/:id/followers", isLoggedIn, async (req, res, next) => {
+  // /api/user/:id/followers
+  try {
+    const user = await db.User.findOne({
+      where: {
+        id: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0,
+      },
+    });
+    const followers = await user.getFollowers({
+      attributes: ["id", "nickname"],
+      offset: parseInt(req.query.offset, 10),
+      limit: parseInt(req.query.limit, 10),
+    });
+    console.log(followers);
+    res.json(followers);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.delete("/:id/follower", isLoggedIn, async (req, res, next) => {
+  try {
+    const me = await db.User.findOne({
+      where: { id: req.user.id },
+    });
+    await me.removeFollower(req.params.id);
+    res.send(req.params.id);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.post("/:id/follow", isLoggedIn, async (req, res, next) => {
+  try {
+    const me = await db.User.findOne({
+      where: { id: req.user.id },
+    });
+    await me.addFollowing(req.params.id);
+    res.send(req.params.id);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.delete("/:id/follow", isLoggedIn, async (req, res, next) => {
+  try {
+    const me = await db.User.findOne({
+      where: { id: req.user.id },
+    });
+    await me.removeFollowing(req.params.id);
+    res.send(req.params.id);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.patch("/nickname", isLoggedIn, async (req, res, next) => {
+  try {
+    await db.User.update(
+      {
+        nickname: req.body.nickname,
+      },
+      {
+        where: { id: req.user.id },
+      }
+    );
+    res.send(req.body.nickname);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
 module.exports = router;
