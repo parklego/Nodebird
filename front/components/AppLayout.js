@@ -1,15 +1,21 @@
-/* eslint-disable react/prop-types */
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import { Menu, Input, Row, Col } from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import LoginForm from "../components/LoginForm";
-import UserProfile from "../components/UserProfile";
-import { LOAD_USER_REQUEST } from "../reducers/user";
+import { Col, Input, Menu, Row } from "antd";
+import { useSelector } from "react-redux";
+import Router from "next/router";
+import LoginForm from "../containers/LoginForm";
+import UserProfile from "../containers/UserProfile";
 
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
+
+  const onSearch = (value) => {
+    Router.push(
+      { pathname: "/hashtag", query: { tag: value } },
+      `/hashtag/${value}`
+    );
+  };
 
   return (
     <div>
@@ -25,10 +31,14 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
         <Menu.Item key="mail">
-          <Input.Search enterButton style={{ verticalAlign: "middle" }} />
+          <Input.Search
+            enterButton
+            style={{ verticalAlign: "middle" }}
+            onSearch={onSearch}
+          />
         </Menu.Item>
       </Menu>
-      <Row gutter={10}>
+      <Row gutter={8}>
         <Col xs={24} md={6}>
           {me ? <UserProfile /> : <LoginForm />}
         </Col>
@@ -36,14 +46,19 @@ const AppLayout = ({ children }) => {
           {children}
         </Col>
         <Col xs={24} md={6}>
-          제로초님의 `React로 NodeBird SNS 만들기` 클론코딩
+          <Link href="https://www.zerocho.com">
+            <a target="_blank">
+              제로초님의 `React로 NodeBird SNS 만들기` 클론코딩
+            </a>
+          </Link>
         </Col>
       </Row>
     </div>
   );
 };
 
-AppLayout.prototype = {
-  children: PropTypes.node,
+AppLayout.propTypes = {
+  children: PropTypes.node.isRequired,
 };
+
 export default AppLayout;

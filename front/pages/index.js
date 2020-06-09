@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from "react";
-import PostForm from "../components/PostForm";
-import PostCard from "../components/PostCard";
+import PostForm from "../containers/PostForm";
+import PostCard from "../containers/PostCard";
 import { useSelector, useDispatch } from "react-redux";
 import { LOAD_MAIN_POSTS_REQUEST } from "../reducers/post";
 // import { connect } from "react-redux";
@@ -13,11 +13,11 @@ const Home = () => {
   const countRef = useRef([]);
 
   const onScroll = useCallback(() => {
-    console.log(
-      window.scrollY, // 스크린 내린 거리
-      document.documentElement.clientHeight, // 화면 높이
-      document.documentElement.scrollHeight // 전체 화면 길이
-    );
+    // console.log(
+    //   window.scrollY, // 스크린 내린 거리
+    //   document.documentElement.clientHeight, // 화면 높이
+    //   document.documentElement.scrollHeight // 전체 화면 길이
+    // );
     if (
       window.scrollY + document.documentElement.clientHeight >
       document.documentElement.scrollHeight - 300
