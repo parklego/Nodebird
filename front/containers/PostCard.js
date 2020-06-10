@@ -11,6 +11,7 @@ import {
   List,
   Popover,
 } from "antd";
+import moment from "moment";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,6 +25,8 @@ import {
 import PostImages from "../components/PostImages";
 import PostCardContent from "../components/PostCardContent";
 import { FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST } from "../reducers/user";
+
+moment.locale("ko");
 
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -200,6 +203,7 @@ const PostCard = ({ post }) => {
               title={post.Retweet.User.nickname}
               description={<PostCardContent postData={post.Retweet.content} />} // a tag x -> Link
             />
+            {moment(post.createdAt).format("YYYY.MM.DD")}
           </Card>
         ) : (
           <Card.Meta

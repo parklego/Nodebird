@@ -50,6 +50,10 @@ const NodeBird = ({ Component, store, pageProps }) => {
               property: "og:type",
               content: "website",
             },
+            {
+              property: "og:image",
+              content: "https://nodebird.com/favicon.ico",
+            },
           ]}
           link={[
             {
