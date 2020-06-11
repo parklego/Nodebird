@@ -52,7 +52,7 @@ const NodeBird = ({ Component, store, pageProps }) => {
             },
             {
               property: "og:image",
-              content: "https://nodebird.com/favicon.ico",
+              content: "https://localhost:3060/favicon.ico",
             },
           ]}
           link={[
@@ -137,7 +137,7 @@ const configureStore = (initialState, options) => {
   const middlewares = [
     sagaMiddleware,
     (store) => (next) => (action) => {
-      console.log(action);
+      // console.log(action);
       next(action);
     },
   ];
