@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EDIT_NICKNAME_REQUEST } from "../reducers/user";
 
 const NicknameEditForm = () => {
-  const [editedName, setEditedName] = useState("");
+  const [editedName, setEditedName] = useState((me && me.nickname) || "");
   const dispatch = useDispatch();
   const { me, isEditingNickname } = useSelector((state) => state.user);
 
