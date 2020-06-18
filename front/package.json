@@ -9,7 +9,7 @@
     "prestart": "npm run build",
     "start": "cross-env NODE_ENV=production PORT=80 pm2 start server.js"
   },
-  "author": "bathingape",
+  "author": "ZeroCho",
   "license": "MIT",
   "dependencies": {
     "@next/bundle-analyzer": "^8.1.0",
@@ -47,6 +47,6 @@
     "eslint-plugin-react": "^7.15.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "nodemon": "^1.19.3",
-    "webpack": "^4.28.0"
+    "webpack": "^4.28.4"
   }
 }
