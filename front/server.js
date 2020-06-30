@@ -48,7 +48,7 @@ app.prepare().then(() => {
   });
 
   // 롤백
-  server.listen(3060, () => {
-    console.log("next+express running on port 3060");
+  server.listen(prod ? process.env.PORT : 3060, () => {
+    console.log(`next+express running on port ${process.env.PORT}`);
   });
 });
