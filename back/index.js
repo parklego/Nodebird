@@ -45,6 +45,11 @@ app.use(
   })
 );
 
+// 배포확인
+app.get("/", (req, res) => {
+  res.send("노드버드 백엔드 정상 동작!");
+});
+
 // 세션 이후에 패스포트를 불러와야한다. 미들웨어는 의존관계가 중요!
 app.use(passport.initialize());
 app.use(passport.session());
