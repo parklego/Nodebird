@@ -33,6 +33,13 @@ if (prod) {
     })
   );
 } else {
+  app.use(morgan("dev"));
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  );
 }
 
 // 아래 두 줄은 json형식의 본문, form을 처리하는 것
