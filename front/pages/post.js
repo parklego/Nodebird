@@ -29,11 +29,11 @@ const Post = ({ id }) => {
             property: "og:image",
             content: singlePost.Images[0]
               ? singlePost.Images[0].src
-              : "http://54.180.169.69.favicon.ico",
+              : "http://api.bathingape.ga.favicon.ico",
           },
           {
             property: "og:url",
-            content: `http://13.209.160.65/post/${id}`,
+            content: `http://bathingape.ga/post/${id}`,
           },
         ]}
       />

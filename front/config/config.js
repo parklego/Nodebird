@@ -1,6 +1,6 @@
 const backUrl =
   process.env.NODE_ENV === "production"
-    ? "http://54.180.169.69"
+    ? "http://api.bathingape.ga"
     : "http://localhost:8080";
 
 export { backUrl };

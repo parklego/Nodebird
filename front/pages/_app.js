@@ -52,7 +52,7 @@ const NodeBird = ({ Component, store, pageProps }) => {
             },
             {
               property: "og:image",
-              content: "https://13.209.160.65/favicon.ico",
+              content: "https://bathingape.ga/favicon.ico",
             },
           ]}
           link={[
