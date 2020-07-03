@@ -1,11 +1,23 @@
 {
   "name": "nodebird-lambda",
   "version": "1.0.0",
-  "description": "",
+  "description": "lambda",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.709.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bathingape/Nodebird.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bathingape/Nodebird/issues"
+  },
+  "homepage": "https://github.com/bathingape/Nodebird#readme"
 }
