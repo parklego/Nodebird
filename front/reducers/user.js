@@ -98,11 +98,13 @@ export default (state = initialState, action) => {
       case SIGN_UP_SUCCESS: {
         draft.isSigningUp = false;
         draft.isSignedUp = true;
+        alert("회원가입성공");
         break;
       }
       case SIGN_UP_FAILURE: {
         draft.isSigningUp = false;
         draft.signUpErrorReason = action.error;
+        alert("회원가입실패");
         break;
       }
       case LOAD_USER_REQUEST: {
