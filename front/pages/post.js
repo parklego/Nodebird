@@ -27,9 +27,9 @@ const Post = ({ id }) => {
           },
           {
             property: "og:image",
-            content:
-              singlePost.Images[0] &&
-              `http://http://54.180.169.69/${singlePost.Images[0].src}`,
+            content: singlePost.Images[0]
+              ? singlePost.Images[0].src
+              : "http://54.180.169.69.favicon.ico",
           },
           {
             property: "og:url",
@@ -40,9 +40,7 @@ const Post = ({ id }) => {
       <div itemScope="content">{singlePost.content}</div>
       <div itemScope="author">{singlePost.User.nickname}</div>
       <div>
-        {singlePost.Images[0] && (
-          <img src={`${backUrl}/${singlePost.Images[0].src}`} />
-        )}
+        {singlePost.Images[0] && <img src={singlePost.Images[0].src} />}
       </div>
     </>
   );

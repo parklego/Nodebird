@@ -3,7 +3,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
-
+const hpp = require("hpp");
+const helmet = require("helmet");
 const passportConfig = require("./passport");
 const db = require("./models");
 const userAPIRouter = require("./routes/user");
@@ -14,11 +15,25 @@ const hashtagAPIRouter = require("./routes/hashtag");
 const dotenv = require("dotenv");
 const passport = require("passport");
 
+const prod = process.env.NODE_ENV === "production";
 dotenv.config();
 
 const app = express();
 db.sequelize.sync();
 passportConfig();
+
+if (prod) {
+  app.use(hpp());
+  app.use(helmet());
+  app.use(morgan("combined"));
+  app.use(
+    cors({
+      origin: "http://bathingape.ga",
+      credentials: true,
+    })
+  );
+} else {
+}
 
 // 아래 두 줄은 json형식의 본문, form을 처리하는 것
 app.use(express.json()); // express에서 지원해줘서 bodyparser필요없음!
@@ -40,6 +55,7 @@ app.use(
     cookie: {
       httpOnly: true, // 자바스크립트로 접근하는 것 제한
       secure: false, // https를 쓸 때 true로 바꾸면 됨
+      domain: prod && ".bathingape.ga",
     },
     name: "asdfasdfads",
   })
@@ -59,9 +75,6 @@ app.use("/api/post", postAPIRouter);
 app.use("/api/posts", postsAPIRouter);
 app.use("/api/hashtag", hashtagAPIRouter);
 
-app.listen(
-  process.env.NODE_ENV === "production" ? process.env.PORT : 8080,
-  () => {
-    console.log(`server is running on http://localhot:${process.env.PORT}`);
-  }
-);
+app.listen(prod ? process.env.PORT : 8080, () => {
+  console.log(`server is running on http://localhot:${process.env.PORT}`);
+});

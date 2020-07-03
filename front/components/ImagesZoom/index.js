@@ -33,7 +33,7 @@ const ImagesZoom = ({ images, onClose }) => {
             {images.map((v) => {
               return (
                 <ImgWrapper>
-                  <img src={`${backUrl}/${v.src}`} />
+                  <img src={v.src} />
                 </ImgWrapper>
               );
             })}

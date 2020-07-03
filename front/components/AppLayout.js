@@ -47,9 +47,7 @@ const AppLayout = ({ children }) => {
         </Col>
         <Col xs={24} md={6}>
           <Link href="https://www.zerocho.com">
-            <a target="_blank">
-              제로초님의 `React로 NodeBird SNS 만들기` 클론코딩
-            </a>
+            <a target="_blank">`React로 NodeBird SNS 만들기` 클론코딩</a>
           </Link>
         </Col>
       </Row>
