@@ -92,7 +92,6 @@ NodeBird.propTypes = {
 };
 
 NodeBird.getInitialProps = async (context) => {
-  // console.log(context);
   const { ctx, Component } = context;
   let pageProps = {};
   const state = ctx.store.getState();
@@ -101,20 +100,14 @@ NodeBird.getInitialProps = async (context) => {
   if (ctx.isServer && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
-
-  if (ctx.isServer && cookie) {
-    axios.defaults.headers.Cookie = cookie;
-  }
-
   if (!state.user.me) {
     ctx.store.dispatch({
       type: LOAD_USER_REQUEST,
     });
   }
   if (Component.getInitialProps) {
-    pageProps = await context.Component.getInitialProps(ctx);
+    pageProps = (await Component.getInitialProps(ctx)) || {};
   }
-
   return { pageProps };
 };
 // export default withRedux((initialState, options) => {
