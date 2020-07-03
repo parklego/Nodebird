@@ -29,7 +29,7 @@ const Post = ({ id }) => {
             property: "og:image",
             content: singlePost.Images[0]
               ? singlePost.Images[0].src
-              : "http://api.bathingape.ga.favicon.ico",
+              : "http://bathingape.ga.favicon.ico",
           },
           {
             property: "og:url",

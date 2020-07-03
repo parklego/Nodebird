@@ -15,16 +15,27 @@ AWS.config.update({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
 });
+// const upload = multer({
+//   storage: multer.diskStorage({
+//     destination(req, file, done) {
+//       // null은 서버에러, 뒤에는 성공 시 uploads폴더에 저장하겠다. =>  S3에도 가능
+//       done(null, "uploads");
+//     },
+//     filename(req, file, done) {
+//       const ext = path.extname(file.originalname); // 확장자 추출
+//       const basename = path.basename(file.originalname, ext); // 제로초.png, ext === .png, basename === 제로초
+//       done(null, basename + new Date().valueOf() + ext); // 파일명이 같으면 덮어씌어지기 때문에 시간을 추가해줌
+//     },
+//   }),
+//   limits: { fileSize: 20 * 1024 * 1024 },
+// });
+
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      // null은 서버에러, 뒤에는 성공 시 uploads폴더에 저장하겠다. =>  S3에도 가능
-      done(null, "uploads");
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname); // 확장자 추출
-      const basename = path.basename(file.originalname, ext); // 제로초.png, ext === .png, basename === 제로초
-      done(null, basename + new Date().valueOf() + ext); // 파일명이 같으면 덮어씌어지기 때문에 시간을 추가해줌
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: "bathingape-nodebird",
+    key(req, file, cb) {
+      cb(null, `original/${+new Date()}${path.basename(file.originalname)}}`);
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 },
@@ -79,7 +90,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
 
 router.post("/images", upload.array("image"), (req, res) => {
   console.log(req.files);
-  res.json(req.files.map((v) => v.filename));
+  res.json(req.files.map((v) => v.location)); // local : v.filename || s3 : v.location
 });
 
 router.get("/:id", async (req, res, next) => {
