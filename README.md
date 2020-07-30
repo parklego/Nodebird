@@ -9,7 +9,7 @@ npm run dev : 개발용 빌드
 
 npm run start : 배포용 빌드
 
-- 사이트 : bathingape.ga
+- 배포사이트 : bathingape.ga
 - 구현 이미지
 
 ![스크린샷, 2020-07-07 14-00-29](https://user-images.githubusercontent.com/53068281/86714834-90f84200-c05a-11ea-9dbe-1d79e0a1ac20.png)
